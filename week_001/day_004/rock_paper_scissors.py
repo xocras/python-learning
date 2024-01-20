@@ -1,6 +1,6 @@
 import random
 
-from day_004.rsc import hands
+from week_001.day_004.rsc import hands
 
 user_choice = int(input('What do you choose? Type 0 for Rock, 1 for Paper or 2 for Scissors.\n'))
 
