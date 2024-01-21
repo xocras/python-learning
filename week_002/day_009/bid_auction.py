@@ -1,3 +1,4 @@
+winner = ['nobody', 0]
 auction = True
 bids = {}
 
@@ -12,16 +13,13 @@ while auction:
 
     auction = True if next_round[0] == 'Y' else False
 
-w = ['nobody', 0]
-
 
 def set_winner(name, value):
-    w[0] = name
-    w[1] = value
+    winner[0], winner[1] = name, value
 
 
 for k, v in bids.items():
-    if v > w[1]:
+    if v > winner[1]:
         set_winner(k, v)
 
-print(f'\nThe winner is {w[0]} with a bid of ${"{0:,.2f}".format(w[1])} dollars.')
+print(f'\nThe winner is {winner[0]} with a bid of ${"{0:,.2f}".format(winner[1])} dollars.')
