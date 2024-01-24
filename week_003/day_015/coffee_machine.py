@@ -58,12 +58,14 @@ def display_resources():
 
 def check_resources(coffee):
     ingredients = MENU[coffee]["ingredients"]
-
+    has_enough = True
     for ingredient, amount in ingredients.items():
         if resources[ingredient][0] < amount:
-            print(f"Sorry, there's not enough {ingredient}.")
-            return False
-    return True
+            has_enough = False
+            print(f"There's not enough {ingredient}.")
+    if not has_enough:
+        print(f"Sorry, please select another option.")
+    return has_enough
 
 
 def update_resources(coffee, setting):
