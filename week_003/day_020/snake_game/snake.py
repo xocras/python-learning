@@ -4,7 +4,7 @@ from turtle import Turtle
 class Snake:
     def __init__(self, screen):
         self.SEGMENT_SIZE = 20
-        self.STARTING_LENGTH = 15
+        self.STARTING_LENGTH = 3
 
         self.segments = []
         self.screen = screen
