@@ -1,5 +1,8 @@
 from turtle import Turtle
 
+NORTH, SOUTH = 90, 270
+WEST, EAST = 180, 0
+
 
 class Snake:
     def __init__(self, screen):
@@ -10,6 +13,7 @@ class Snake:
         self.screen = screen
 
         self.add_segments(self.STARTING_LENGTH)
+        self.head = self.segments[0]
 
     def position_segments(self):
         length = len(self.segments)
@@ -39,45 +43,34 @@ class Snake:
             self.segments[index].setposition((x, y))
 
     def turn_east(self):
-        if self.segments[0].heading() == 180:
+        if self.head.heading() == WEST:
             return
 
-        self.move_tail()
-
-        self.segments[0].setheading(0)
-        self.segments[0].forward(self.SEGMENT_SIZE)
-
-        self.screen.update()
+        self.head.setheading(EAST)
+        self.move()
 
     def turn_west(self):
-        if self.segments[0].heading() == 0:
+        if self.head.heading() == EAST:
             return
 
-        self.move_tail()
-
-        self.segments[0].setheading(180)
-        self.segments[0].forward(self.SEGMENT_SIZE)
-
-        self.screen.update()
+        self.head.setheading(WEST)
+        self.move()
 
     def turn_south(self):
-        if self.segments[0].heading() == 90:
+        if self.head.heading() == NORTH:
             return
 
-        self.move_tail()
-
-        self.segments[0].setheading(270)
-        self.segments[0].forward(self.SEGMENT_SIZE)
-
-        self.screen.update()
+        self.head.setheading(SOUTH)
+        self.move()
 
     def turn_north(self):
-        if self.segments[0].heading() == 270:
+        if self.head.heading() == SOUTH:
             return
 
+        self.head.setheading(NORTH)
+        self.move()
+
+    def move(self):
         self.move_tail()
-
-        self.segments[0].setheading(90)
-        self.segments[0].forward(self.SEGMENT_SIZE)
-
+        self.head.forward(self.SEGMENT_SIZE)
         self.screen.update()
