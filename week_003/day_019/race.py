@@ -9,8 +9,8 @@ def choose_turtle():
     return chosen_turtle
 
 
-def set_turtles(turtle_list):
-    for i, turtle in enumerate(turtle_list):
+def set_turtles():
+    for i, turtle in enumerate(turtles):
         turtle.penup()
         turtle.shape("turtle")
         turtle.setx(-w + 50)
@@ -24,17 +24,26 @@ def set_turtles(turtle_list):
         turtle.pendown()
 
 
-def move_turtles(turtle_list):
-    for n, turtle in enumerate(turtle_list):
+def set_goal():
+    finish_line = Turtle(visible=False)
+    finish_line.penup()
+    finish_line.setposition((GOAL, h - 40))
+    finish_line.pendown()
+    finish_line.setposition((GOAL, -h + 40))
+
+
+def move_turtles():
+    for n, turtle in enumerate(turtles):
         turtle.forward(randint(0, 20))
         if turtle.xcor() >= GOAL:
             return n + 1
-    return move_turtles(turtle_list)
+    return move_turtles()
 
 
 screen = Screen()
 
-w, h = screen.window_width()/2, screen.window_height()/2
+w = screen.window_width()/2
+h = screen.window_height()/2
 
 AMOUNT = 8
 
@@ -44,9 +53,14 @@ turtles = [Turtle(visible=False) for turtle in range(AMOUNT)]
 
 choice = choose_turtle()
 
-set_turtles(turtles)
+screen.tracer(0)
 
-winner = move_turtles(turtles)
+set_goal()
+set_turtles()
+
+screen.tracer(1)
+
+winner = move_turtles()
 
 print(f"The winner is Turtle #{winner}!")
 print(f"{"You won" if choice == winner else "You lost"}!")
