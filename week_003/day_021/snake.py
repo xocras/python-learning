@@ -7,6 +7,7 @@ STARTING_LENGTH = 3
 PLAYER = []
 
 screen = Screen()
+screen.tracer(0)
 screen.bgcolor("black")
 screen.title("Snake Game")
 screen.setup(SCREEN_DIMENSION, SCREEN_DIMENSION)
@@ -23,11 +24,13 @@ def add_segments(snake, amount):
         snake_segments.penup()
         snake_segments.setx(section_position(snake))
         snake.append(snake_segments)
+    screen.update()
 
 
 def move_snake():
     for snake_section in PLAYER:
         snake_section.forward(SNAKE_SPEED)
+    screen.update()
 
 
 add_segments(PLAYER, STARTING_LENGTH)
