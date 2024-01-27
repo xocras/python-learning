@@ -3,20 +3,6 @@ from snake import Snake
 from food import Food
 from time import sleep
 
-
-def run_game():
-    sleep(0.1)
-    snake.move()
-
-    if snake.head.distance(food) <= snake.SEGMENT_SIZE * 1.5:
-        food.random_position()
-        snake.add_segments(1)
-        print(f"You ate a fruit! Score: {len(snake.segments) - snake.STARTING_LENGTH}")
-
-    screen.update()
-    run_game()
-
-
 # Settings
 SCREEN_SIZE = 600
 
@@ -39,6 +25,18 @@ screen.onkeypress(snake.turn_east, "Right")
 screen.onkeypress(snake.turn_west, "Left")
 
 # Start Game:
-run_game()
+game_over = False
 
-screen.exitonclick()
+while not game_over:
+
+    sleep(0.1)
+
+    snake.move()
+
+    if snake.head.distance(food) <= snake.SEGMENT_SIZE * 1.5:
+        food.random_position()
+        snake.add_segments(1)
+        print(f"You ate a fruit! Score: {len(snake.segments) - snake.STARTING_LENGTH}")
+
+    screen.update()
+

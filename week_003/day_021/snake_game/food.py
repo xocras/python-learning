@@ -10,13 +10,14 @@ class Food(Turtle):
         self.penup()
         self.color("purple")
 
-        self.x_bound = screen_size - self.FOOD_SIZE * 2
-        self.y_bound = screen_size - self.FOOD_SIZE * 2
+        self.x_bound = int(screen_size/2) - self.FOOD_SIZE
+        self.y_bound = int(screen_size/2) - self.FOOD_SIZE
+        self.offset = int(self.FOOD_SIZE/2)
 
         self.random_position()
 
     def random_position(self):
         self.setposition(
-            randint(0, self.x_bound) - self.x_bound/2,
-            randint(0, self.y_bound) - self.y_bound/2
+            randint(-self.x_bound, self.x_bound - self.offset),
+            randint(-self.y_bound + self.offset, self.y_bound)
         )
