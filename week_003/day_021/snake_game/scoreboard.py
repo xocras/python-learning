@@ -4,25 +4,28 @@ from turtle import Turtle
 class Scoreboard(Turtle):
     def __init__(self, screen_size):
         super().__init__(visible=False)
-
+        self.screen_size = screen_size
         self.font_size = 24
         self.score = 0
 
-        self.line = Turtle(visible=False)
-        self.line.penup()
-        self.line.color("white")
-        self.line.setposition(
-            -screen_size / 2 + self.font_size,
-            screen_size/2 - self.font_size * 2 - 16
-        )
-        self.line.pendown()
-        self.line.setx(screen_size / 2 - self.font_size - 16)
+        self.setup_line()
 
         self.penup()
         self.color("white")
         self.sety(screen_size/2 - self.font_size * 2)
 
         self.update_score()
+
+    def setup_line(self):
+        line = Turtle(visible=False)
+        line.penup()
+        line.color("white")
+        line.setposition(
+            -self.screen_size / 2 + self.font_size,
+            self.screen_size / 2 - self.font_size * 2 - 16
+        )
+        line.pendown()
+        line.setx(self.screen_size / 2 - self.font_size - 16)
 
     def update_score(self):
         self.clear()
