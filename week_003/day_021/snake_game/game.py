@@ -20,7 +20,7 @@ def check_collision():
     wall = (x >= BOUNDS or
             x <= -BOUNDS - 5 or
             y <= -BOUNDS or
-            y >= BOUNDS - SCORE_SIZE)
+            y >= BOUNDS - SCOREBOARD_SIZE)
 
     # Tail Collision
     tail = False
@@ -47,7 +47,7 @@ def alert(message):
 
 # Settings
 SEGMENT_SIZE = 20
-SCORE_SIZE = 64
+SCOREBOARD_SIZE = 64
 SCREEN_SIZE = 600
 BOUNDS = SCREEN_SIZE / 2 - SEGMENT_SIZE
 
