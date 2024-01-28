@@ -24,10 +24,7 @@ def check_collision():
 
     # Tail Collision
     tail = False
-    for i, segment in enumerate(snake.segments):
-        if i < 3:
-            continue
-
+    for segment in snake.segments[3:]:
         if snake.head.distance(segment) <= SEGMENT_SIZE/2:
             tail = True
             break
