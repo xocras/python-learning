@@ -24,8 +24,6 @@ def check_goal():
 def level_up():
     print("Level Up!")
 
-    GameOver()
-
     level.increase_level(1)
 
     player.reset_player()
