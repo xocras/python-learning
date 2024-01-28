@@ -30,9 +30,13 @@ class Paddle(Turtle):
         self.y_bound = bound
 
     def move_up(self):
-        if self.ycor() <= self.y_bound - self.height/2 - SPEED:
-            self.sety(self.ycor() + SPEED)
+        y = self.ycor() + SPEED
+
+        if y <= self.y_bound - self.height / 2:
+            self.sety(y)
 
     def move_down(self):
-        if self.ycor() >= -self.y_bound + self.height/2 + SPEED:
-            self.sety(self.ycor() - SPEED)
+        y = self.ycor() - SPEED
+
+        if y >= -self.y_bound + self.height/2:
+            self.sety(y)
