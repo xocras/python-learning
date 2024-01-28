@@ -23,7 +23,7 @@ player_1 = Paddle(-SCREEN_WIDTH + MARGIN)
 player_1.set_name("Player 1")
 
 player_2 = Paddle(SCREEN_WIDTH - MARGIN - 5)
-player_1.set_name("Player 2")
+player_2.set_name("Player 2")
 
 # Setup Listeners:
 screen.listen()
@@ -37,6 +37,11 @@ screen.onkeypress(player_2.move_down, "Down")
 # Start Game:
 while not game_over:
     sleep(0.05)
+
+    if ball.paddle_collision(player_1) or ball.paddle_collision(player_2):
+        ball.switch_x_direction()
+        ball.increase_bounces(1)
+        ball.paddle_hit()
 
     ball.move()
 
