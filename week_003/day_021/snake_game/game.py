@@ -6,23 +6,37 @@ from time import sleep
 
 
 def check_collision():
+    # Food Collision
     if snake.head.distance(food) <= snake.SEGMENT_SIZE * 1.5:
         food.refresh()
         snake.add_segments(1)
         scoreboard.increase_score(1)
 
+    # Head Position
     x = snake.head.xcor()
     y = snake.head.ycor()
 
-    result = (x >= BOUNDS or
-              x <= -BOUNDS - 5 or
-              y <= -BOUNDS or
-              y >= BOUNDS - SCORE_SIZE)
+    # Wall Collision
+    wall = (x >= BOUNDS or
+            x <= -BOUNDS - 5 or
+            y <= -BOUNDS or
+            y >= BOUNDS - SCORE_SIZE)
 
-    if result:
+    # Tail Collision
+    tail = False
+    for i, segment in enumerate(snake.segments):
+        if i < 3:
+            continue
+
+        if snake.head.distance(segment) <= SEGMENT_SIZE/2:
+            tail = True
+            break
+
+    # Game Over Message
+    if wall or tail:
         alert("Game Over")
 
-    return result
+    return wall or tail
 
 
 def alert(message):
