@@ -3,7 +3,14 @@ from random import random, randint
 
 
 def choose_turtle():
-    chosen_turtle = screen.numinput("Turtle Race", f"Choose your turtle number (1 - {AMOUNT})", 1)
+    chosen_turtle = screen.numinput(
+        "Turtle Race",
+        f"Choose your turtle number (1 - {AMOUNT})",
+        1
+    )
+
+    chosen_turtle = chosen_turtle or 1
+
     if chosen_turtle <= 0 or chosen_turtle > AMOUNT:
         choose_turtle()
     return chosen_turtle
@@ -61,8 +68,9 @@ set_turtles()
 screen.tracer(1)
 
 winner = move_turtles()
+message = "You won" if choice == winner else "You lost"
 
 print(f"The winner is Turtle #{winner}!")
-print(f"{"You won" if choice == winner else "You lost"}!")
+print(f"{message}!")
 
 screen.exitonclick()
