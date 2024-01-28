@@ -1,4 +1,5 @@
 from turtle import Turtle
+from random import randint
 
 
 class Ball(Turtle):
@@ -13,8 +14,8 @@ class Ball(Turtle):
         self.x_bound = 400
         self.y_bound = 300
 
-        self.x_direction = 1
-        self.y_direction = 1
+        self.x_direction = 1 if randint(0, 1) else -1
+        self.y_direction = 1 if randint(0, 1) else -1
 
         self.color("white")
         self.penup()
@@ -53,6 +54,9 @@ class Ball(Turtle):
     def set_speed(self, amount):
         self.speed = amount
 
+    def set_bounces(self, amount):
+        self.bounces = amount
+
     def increase_speed(self, amount):
         self.speed += amount
 
@@ -71,7 +75,9 @@ class Ball(Turtle):
 
         if self.x_collision(x):
             self.switch_x_direction()
-            self.increase_bounces(1)
+            self.set_speed(10)
+            self.set_bounces(0)
+            self.reset()
 
         self.setposition(x, y)
 
