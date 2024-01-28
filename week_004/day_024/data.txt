@@ -1,0 +1,8 @@
+
+Hello, my name is Oscar!
+
+• I'm a JavaScript and Python developer.
+
+• My favorite food are Spicy Chicken Sandwiches.
+
+- Python 3.12
