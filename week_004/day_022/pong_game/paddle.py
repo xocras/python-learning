@@ -1,12 +1,11 @@
 from turtle import Turtle
 
-SPEED = 20
-
 
 class Paddle(Turtle):
     def __init__(self, position):
         super().__init__("square")
         self.name = ""
+        self.speed = 30
 
         self.height = 100
         self.width = 20
@@ -30,13 +29,13 @@ class Paddle(Turtle):
         self.y_bound = bound
 
     def move_up(self):
-        y = self.ycor() + SPEED
+        y = self.ycor()
 
-        if y <= self.y_bound - self.height / 2:
-            self.sety(y)
+        if y < self.y_bound - self.height / 2:
+            self.sety(y + self.speed)
 
     def move_down(self):
-        y = self.ycor() - SPEED
+        y = self.ycor()
 
-        if y >= -self.y_bound + self.height/2:
-            self.sety(y)
+        if y > -self.y_bound + self.height/2:
+            self.sety(y - self.speed)
