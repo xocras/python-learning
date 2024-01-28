@@ -1,6 +1,7 @@
 from turtle import Screen
 from snake import Snake
 from food import Food
+from scoreboard import Scoreboard
 from time import sleep
 
 # Settings
@@ -16,6 +17,7 @@ screen.setup(SCREEN_SIZE, SCREEN_SIZE)
 # Setup Objects:
 snake = Snake()
 food = Food(SCREEN_SIZE)
+scoreboard = Scoreboard(SCREEN_SIZE)
 
 # Setup Listeners:
 screen.listen()
@@ -34,8 +36,9 @@ while not game_over:
     snake.move()
 
     if snake.head.distance(food) <= snake.SEGMENT_SIZE * 1.5:
-        food.random_position()
+        food.refresh()
         snake.add_segments(1)
+        scoreboard.increase_score(1)
         print(f"You ate a fruit! Score: {len(snake.segments) - snake.STARTING_LENGTH}")
 
     screen.update()
