@@ -19,17 +19,18 @@ class Scoreboard(Turtle):
     def setup_line(self):
         line = Turtle(visible=False)
         line.penup()
+        line.width(2)
         line.color("white")
         line.setposition(
             -self.screen_size / 2 + self.font_size,
-            self.screen_size / 2 - self.font_size * 2 - 16
+            self.screen_size / 2 - self.font_size * 2 - 12
         )
         line.pendown()
         line.setx(self.screen_size / 2 - self.font_size - 16)
 
     def update_score(self):
         self.clear()
-        self.write(f"Score: {self.score}", False, "center", ('Arial', self.font_size, 'normal'))
+        self.write(f"Score: {self.score}", False, "center", ('Courier', self.font_size, 'normal'))
 
     def increase_score(self, amount):
         self.score += amount

@@ -1,11 +1,41 @@
-from turtle import Screen
+from turtle import Screen, Turtle
 from snake import Snake
 from food import Food
 from scoreboard import Scoreboard
 from time import sleep
 
+
+def check_collision():
+    if snake.head.distance(food) <= snake.SEGMENT_SIZE * 1.5:
+        food.refresh()
+        snake.add_segments(1)
+        scoreboard.increase_score(1)
+
+    x = snake.head.xcor()
+    y = snake.head.ycor()
+
+    result = (x >= BOUNDS or
+              x <= -BOUNDS - 5 or
+              y <= -BOUNDS or
+              y >= BOUNDS - SCORE_SIZE)
+
+    if result:
+        alert("Game Over")
+
+    return result
+
+
+def alert(message):
+    alert_box = Turtle(visible=False)
+    alert_box.color("white")
+    alert_box.write(message, False, "center", ('Courier', 16, 'normal'))
+
+
 # Settings
+SEGMENT_SIZE = 20
+SCORE_SIZE = 64
 SCREEN_SIZE = 600
+BOUNDS = SCREEN_SIZE / 2 - SEGMENT_SIZE
 
 # Setup Screen:
 screen = Screen()
@@ -35,11 +65,8 @@ while not game_over:
 
     snake.move()
 
-    if snake.head.distance(food) <= snake.SEGMENT_SIZE * 1.5:
-        food.refresh()
-        snake.add_segments(1)
-        scoreboard.increase_score(1)
-        print(f"You ate a fruit! Score: {len(snake.segments) - snake.STARTING_LENGTH}")
+    game_over = check_collision()
 
     screen.update()
 
+screen.exitonclick()
