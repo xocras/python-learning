@@ -5,7 +5,7 @@ class Scoreboard(Turtle):
     def __init__(self, direction=1):
         super().__init__()
         self.margin = 24
-        self.font_size = 24
+        self.font_size = 80
         self.score = 0
         self.direction = direction
 
