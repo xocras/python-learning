@@ -1,6 +1,7 @@
 from turtle import Screen
 from paddle import Paddle
 from ball import Ball
+from scoreboard import Scoreboard
 from time import sleep
 
 game_over = False
@@ -25,6 +26,11 @@ player_1.set_name("Player 1")
 player_2 = Paddle(SCREEN_WIDTH - MARGIN - 5)
 player_2.set_name("Player 2")
 
+scoreboards = {
+    player_1.name: Scoreboard(-1),
+    player_2.name: Scoreboard(1),
+}
+
 # Setup Listeners:
 screen.listen()
 
@@ -43,7 +49,8 @@ while not game_over:
         ball.increase_bounces(1)
         ball.paddle_hit()
 
-    ball.move()
+    if ball.move() == "Score!":
+        scoreboards[player_1.name if ball.x_direction == 1 else player_2.name].increase_points(1)
 
     screen.update()
 

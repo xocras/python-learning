@@ -81,7 +81,7 @@ class Ball(Turtle):
 
         if self.x_collision(x):
             self.reset_ball()
-            return
+            return "Score!"
 
         self.setposition(x, y)
 
