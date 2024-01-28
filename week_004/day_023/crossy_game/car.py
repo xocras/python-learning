@@ -75,6 +75,9 @@ class Car(Turtle):
 
         self.setx(x)
 
+    def crashed_player(self, player):
+        return self.distance(player) <= (self.height + player.height) / 2
+
 
 def random_direction():
     return 1 if randint(0, 1) else -1

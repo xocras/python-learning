@@ -1,6 +1,8 @@
 from turtle import Screen
 from player import Player
+from level import Level
 from car import Car
+from game_over import GameOver
 from time import sleep
 
 game_over = False
@@ -22,6 +24,10 @@ def check_goal():
 def level_up():
     print("Level Up!")
 
+    GameOver()
+
+    level.increase_level(1)
+
     player.reset_player()
 
     for car in cars:
@@ -42,6 +48,8 @@ screen.bgcolor("gray")
 # Setup Objects:
 player = Player()
 
+level = Level()
+
 cars = [Car() for car in range(CAR_AMOUNT)]
 
 # Setup Listeners:
@@ -54,10 +62,14 @@ screen.onkeypress(player.move_down, "Down")
 while not game_over:
     sleep(0.05)
 
+    check_goal()
+
     for car in cars:
         car.move()
-
-    check_goal()
+        game_over = car.crashed_player(player)
+        if game_over:
+            GameOver()
+            break
 
     screen.update()
 
