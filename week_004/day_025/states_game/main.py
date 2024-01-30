@@ -9,13 +9,9 @@ import pandas
 
 
 def end_game():
-    print("Wrong guess!")
-
-    global game_over
-    game_over = True
 
     # Clear Answers
-    for answer in answers:
+    for answer in answers.values():
         answer.clear()
 
     # Display Game Over
@@ -34,20 +30,23 @@ screen.bgpic("blank_states.gif")
 
 states = pandas.read_csv("50_states.csv")
 
-answers = []
+answers = {}
 
-while not game_over:
+while len(answers) < 50:
 
-    guess = turtle.textinput("Guess the State", "Name another state:")
+    guess = turtle.textinput(f"Guess the State - {len(answers)}/50", "Name another state:")
+
+    if guess in answers.keys():
+        continue
 
     match = states[states['state'] == guess]
 
     if not len(match):
         end_game()
-        continue
+        break
 
     # Display State
-    answers.append(State(*[match.iloc[0, n] for n in range(3)]))
+    answers[guess] = State(*[match.iloc[0, n] for n in range(3)])
 
 turtle.mainloop()
 
