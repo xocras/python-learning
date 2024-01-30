@@ -12,5 +12,3 @@ table = {
 table = pandas.DataFrame(table)
 
 table.to_csv("squirrel_count.csv", index=False)
-
-print(table)
