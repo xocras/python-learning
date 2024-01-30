@@ -5,6 +5,8 @@ import pandas
 
 
 def end_game():
+    print("Wrong guess!")
+
     global game_over
     game_over = True
 
