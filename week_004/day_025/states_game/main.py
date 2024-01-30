@@ -34,7 +34,7 @@ answers = {}
 
 while len(answers) < 50:
 
-    guess = turtle.textinput(f"Guess the State - {len(answers)}/50", "Name another state:")
+    guess = turtle.textinput(f"Guess the State - {len(answers)}/50", "Name another state:").title()
 
     if guess in answers.keys():
         continue
