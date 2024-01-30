@@ -10,4 +10,4 @@ data = {
 data = pandas.DataFrame(data)
 
 for i, row in data.iterrows():
-    print(row.score)
+    print(row['scores'])
