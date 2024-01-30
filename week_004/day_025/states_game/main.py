@@ -3,6 +3,10 @@ from state import State
 import turtle
 import pandas
 
+# Notes:
+# Series.item(): Returns the first item
+# Series.to_list(): Converts series into a list
+
 
 def end_game():
     print("Wrong guess!")
