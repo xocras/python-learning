@@ -2,7 +2,7 @@ import tkinter
 
 
 def miles_to_km():
-    km_output["text"] = "{:,.2f}".format(float(miles_input.get()) * 1.6)
+    km_output["text"] = "{:,.2f}".format(float(miles_input.get()) * 1.609)
 
 
 # Window
