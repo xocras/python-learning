@@ -12,3 +12,21 @@ def greet(**names):
 
 
 greet(first_name="Oscar", last_name="Cruz")
+
+
+# Keyword Arguments - Classes
+class Car:
+    def __init__(self, **components):
+        self.brand = components.get("brand")
+        self.doors = components.get("Doors")
+        self.wheels = components.get("wheels")
+
+    def list_properties(self):
+        print(f"Brand: {self.brand}")
+        print(f"Doors: {self.doors}")
+        print(f"Wheels: {self.wheels}")
+
+
+car = Car(wheels=4, brand="Toyota")
+
+car.list_properties()
