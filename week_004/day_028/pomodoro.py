@@ -1,4 +1,4 @@
-from tkinter import Tk, Canvas, PhotoImage
+from tkinter import Tk, Canvas, PhotoImage, Label, Button
 # ---------------------------- CONSTANTS ------------------------------- #
 PINK = "#e2979c"
 RED = "#e7305b"
@@ -10,7 +10,7 @@ SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 
 BACKGROUND_WIDTH = 200
-BACKGROUND_HEIGHT = 224
+BACKGROUND_HEIGHT = 240
 
 MARGIN = 24
 
@@ -26,7 +26,7 @@ MARGIN = 24
 window = Tk()
 window.title("Pomodoro")
 window.minsize(BACKGROUND_WIDTH, BACKGROUND_HEIGHT)
-window.config(padx=112, pady=48, bg=YELLOW)
+window.config(padx=80, pady=8, bg=YELLOW)
 
 # Image
 background_image = PhotoImage(file="tomato.png")
@@ -49,7 +49,47 @@ canvas.create_text(
     font=(FONT_NAME, 32, "bold")
 )
 
-canvas.grid(column=2, row=2)
+canvas.grid(column=2, row=2, pady=8)
+
+# Title
+
+title = Label(
+    text="Title",
+    fg=GREEN,
+    bg=YELLOW,
+    font=(FONT_NAME, 32, "bold")
+)
+
+title.grid(column=2, row=0, pady=(32, 16))
+
+# Start Button
+
+start_button = Button(
+    text="Start",
+    font=(FONT_NAME, 16, "bold")
+)
+
+start_button.grid(column=1, row=3, pady=(32, 64))
+
+# Reset Button
+
+reset_button = Button(
+    text="Reset",
+    font=(FONT_NAME, 16, "bold")
+)
+
+reset_button.grid(column=3, row=3, pady=(32, 64))
+
+# Checkmarks
+
+checkmarks = Label(
+    text="✔",
+    fg=GREEN,
+    bg=YELLOW,
+    font=(FONT_NAME, 16, "bold")
+)
+
+checkmarks.grid(column=2, row=3, pady=(32, 64))
 
 # Start
 window.mainloop()
