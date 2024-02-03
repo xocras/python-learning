@@ -1,4 +1,4 @@
-import pandas
+import json
 
 import pyperclip
 
@@ -18,49 +18,51 @@ FONT_NAME = "Arial"
 
 # Functions
 def save():
-    #  Read Data
-    try:
-        passwords = (pandas.read_csv("passwords.csv"))
-    except FileNotFoundError:
-        passwords = []
-
     # Fetch Inputs
-    data = {
-        "website": [website_input.get()],
-        "user": [username_input.get()],
-        "password": [password_input.get()]
+    website = website_input.get()
+    username = username_input.get()
+    password = password_input.get()
+
+    #  Build JSON
+    entry = {
+        website: {
+            "user": username,
+            "password": password
+        }
     }
 
     # Check Inputs
-    for field in data.values():
-        if not field[0]:
-            messagebox.showinfo(
-                "Error",
-                "Missing information.\n\n" +
-                "Please review and fill all the fields."
-            )
-            return
+    if not website or not username or not password:
+        messagebox.showinfo(
+            "Error",
+            "Missing information.\n\n" +
+            "Please review and fill all the fields."
+        )
+        return
 
     # User Confirmation
     confirmation = messagebox.askyesno(
         "Confirmation",
         f"Are you sure you want this password to be added?\n\n" +
-        f"Website: {data["website"][0]}\n\n" +
-        f"User: {data["user"][0]}\n\n" +
-        f"Password: {data["password"][0]}"
+        f"Website: {website}\n\n" +
+        f"User: {username}\n\n" +
+        f"Password: {password}"
     )
 
     if not confirmation:
         return
 
-    # Concat Passwords
-    data = pandas.DataFrame(data)
+    # Read Passwords
+    try:
+        with open("passwords.json", "r") as file:
+            data = json.load(file)
+            data.update(entry)
+    except FileNotFoundError:
+        data = entry
 
-    if len(passwords):
-        data = pandas.concat([passwords, data])
-
-    # Save Password
-    data.to_csv('passwords.csv', index=False)
+    # Save Passwords
+    with open("passwords.json", "w") as file:
+        json.dump(data, file, indent=4)
 
     # Clear Inputs
     website_input.delete(0, 'end')
