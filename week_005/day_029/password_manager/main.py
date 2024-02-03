@@ -1,6 +1,6 @@
 import pandas
 
-from tkinter import Tk, Canvas, PhotoImage, Label, Button, Entry
+from tkinter import Tk, Canvas, PhotoImage, Label, Button, Entry, messagebox
 
 BACKGROUND_WIDTH = 600
 BACKGROUND_HEIGHT = 400
@@ -27,9 +27,21 @@ def save():
         "password": [password_input.get()]
     }
 
-    data = pandas.DataFrame(data)
+    # User Confirmation
+    confirmation = messagebox.askyesno(
+        "Confirmation",
+        f"Are you sure you want this password to be added?\n\n" +
+        f"Website: {data["website"][0]}\n\n" +
+        f"User: {data["user"][0]}\n\n" +
+        f"Password: {data["password"][0]}"
+    )
+
+    if not confirmation:
+        return
 
     # Concat Passwords
+    data = pandas.DataFrame(data)
+
     if len(passwords):
         data = pandas.concat([passwords, data])
 
