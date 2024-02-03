@@ -10,38 +10,89 @@ WORK_MIN = 25
 SHORT_BREAK_MIN = 5
 LONG_BREAK_MIN = 20
 
-BACKGROUND_WIDTH = 200
+BACKGROUND_WIDTH = 280
 BACKGROUND_HEIGHT = 240
 
 MARGIN = 24
 
-# ---------------------------- TIMER RESET ------------------------------- # 
+# ---------------------------- TIMER RESET ------------------------------- #
+reset = False
+
+
+def reset_timer():
+    global reset
+    reset = True
+
+    count_down(0, work=False, breaks=0)
+    update_checkmark(0)
+    title.config(text="Pomodoro!", fg=GREEN)
+
 
 # ---------------------------- TIMER MECHANISM ------------------------------- #
-
-
 def start_timer():
-    count_down(25*60)
+    reset_timer()
+
+    global reset
+    reset = False
+
+    update_checkmark(0)
+    title.config(text="Working", fg=GREEN)
+    count_down(WORK_MIN * 60, work=True, breaks=0)
+
+
+def update_checkmark(amount):
+
+    if amount:
+        checkmarks.config(text=checkmarks.cget('text') + "✔")
+    else:
+        checkmarks.config(text="")
+
 
 # ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
+def count_down(count, work, breaks):
 
-
-def count_down(count):
-    if count < 0:
+    # Reset Timer
+    if count and reset:
         return
 
+    # Start Short Break
+    elif count <= 0 and work and breaks < 3:
+        update_checkmark(1)
+
+        title.config(text="Break", fg=PINK)
+        window.after(1000, count_down, SHORT_BREAK_MIN * 60, False, breaks + 1)
+
+    # Start Long Break
+    elif count <= 0 and work:
+        update_checkmark(1)
+
+        title.config(text="Long Break", fg=RED)
+        window.after(1000, count_down, LONG_BREAK_MIN * 60, False, 0)
+
+    # Start Working
+    elif count <= 0 and not work:
+
+        if not breaks:
+            update_checkmark(0)
+
+        title.config(text="Working", fg=GREEN)
+        count_down(WORK_MIN * 60, work=True, breaks=breaks)
+
+    # Continue Timer
+    else:
+        window.after(1000, count_down, count - 1, work, breaks)
+
+    # Update Display
     minutes, seconds = divmod(count, 60)
 
     canvas.itemconfig(timer, text=f"{minutes:02d}:{seconds:02d}")
-
-    window.after(1000, count_down, count - 1)
 
 
 # ---------------------------- UI SETUP ------------------------------- #
 
 # Window
 window = Tk()
-window.title("Pomodoro")
+window.title("Pomodoro!")
 window.minsize(BACKGROUND_WIDTH, BACKGROUND_HEIGHT)
 window.config(padx=80, pady=8, bg=YELLOW)
 
@@ -94,7 +145,8 @@ start_button.grid(column=1, row=3, pady=(32, 64))
 
 reset_button = Button(
     text="Reset",
-    font=(FONT_NAME, 16, "bold")
+    font=(FONT_NAME, 16, "bold"),
+    command=reset_timer
 )
 
 reset_button.grid(column=3, row=3, pady=(32, 64))
@@ -102,7 +154,7 @@ reset_button.grid(column=3, row=3, pady=(32, 64))
 # Checkmarks
 
 checkmarks = Label(
-    text="✔",
+    text="",
     fg=GREEN,
     bg=YELLOW,
     font=(FONT_NAME, 16, "bold")
