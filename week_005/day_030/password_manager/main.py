@@ -20,19 +20,19 @@ FONT_NAME = "Arial"
 def save():
     # Fetch Inputs
     website = website_input.get()
-    username = username_input.get()
+    user = username_input.get()
     password = password_input.get()
 
     #  Build JSON
     entry = {
         website: {
-            "user": username,
+            "user": user,
             "password": password
         }
     }
 
     # Check Inputs
-    if not website or not username or not password:
+    if not website or not user or not password:
         messagebox.showinfo(
             "Error",
             "Missing information.\n\n" +
@@ -45,7 +45,7 @@ def save():
         "Confirmation",
         f"Are you sure you want this password to be added?\n\n" +
         f"Website: {website}\n\n" +
-        f"User: {username}\n\n" +
+        f"User: {user}\n\n" +
         f"Password: {password}"
     )
 
@@ -75,6 +75,29 @@ def random_password():
     password_input.insert(0, password)
 
     pyperclip.copy(password)
+
+
+def search():
+
+    # Fetch Inputs
+    website = website_input.get()
+
+    # Read Passwords
+    try:
+        with open("passwords.json", "r") as file:
+            data = json.load(file)[website]
+    except (FileNotFoundError, KeyError):
+        messagebox.showinfo(
+            "Not Found",
+            "The requested website wasn't found."
+        )
+    else:
+        messagebox.showinfo(
+            "Credentials",
+            f"Website: {website}\n\n" +
+            f"User: {data["user"]}\n\n" +
+            f"Password: {data["password"]}"
+        )
 
 
 # Window
@@ -112,11 +135,11 @@ username_label.grid(column=0, row=2, pady=(4, 4))
 password_label.grid(column=0, row=3, pady=(4, 8))
 
 # Inputs
-website_input = Entry(width=64)
+website_input = Entry(width=32)
 username_input = Entry(width=64)
 password_input = Entry(width=32)
 
-website_input.grid(column=1, row=1, columnspan=2, ipady=4, pady=(8, 4))
+website_input.grid(column=1, row=1, ipady=4, pady=(8, 4))
 username_input.grid(column=1, row=2, columnspan=2, ipady=4, pady=(4, 4))
 password_input.grid(column=1, row=3, ipady=5, pady=(4, 8))
 
@@ -125,9 +148,11 @@ username_input.insert(0, "oscar.cruz@mail.com")
 website_input.focus()
 
 # Button
+search_button = Button(text="Search", font=(FONT_NAME, 12), width=19, command=search)
 generate_password_button = Button(text="Generate Password", font=(FONT_NAME, 12), width=19, command=random_password)
 add_button = Button(text="Add", font=(FONT_NAME, 12), width=42, command=save)
 
+search_button.grid(column=2, row=1, pady=(4, 4))
 generate_password_button.grid(column=2, row=3, pady=(4, 8))
 add_button.grid(column=1, row=4, columnspan=2)
 
