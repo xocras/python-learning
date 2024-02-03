@@ -1,6 +1,10 @@
 import pandas
 
+import pyperclip
+
 from tkinter import Tk, Canvas, PhotoImage, Label, Button, Entry, messagebox
+
+from password_generator import generate_password
 
 BACKGROUND_WIDTH = 600
 BACKGROUND_HEIGHT = 400
@@ -16,7 +20,7 @@ FONT_NAME = "Arial"
 def save():
     #  Read Data
     try:
-        passwords = (pandas.read_csv("passwords.csv"))
+        passwords = (pandas.read_csv("./passwords.csv"))
     except FileNotFoundError:
         passwords = []
 
@@ -56,11 +60,19 @@ def save():
         data = pandas.concat([passwords, data])
 
     # Save Password
-    data.to_csv('passwords.csv', index=False)
+    data.to_csv('./passwords.csv', index=False)
 
     # Clear Inputs
     website_input.delete(0, 'end')
     password_input.delete(0, 'end')
+
+
+def random_password():
+    password = generate_password(8, 4, 4)
+    password_input.delete(0, 'end')
+    password_input.insert(0, password)
+
+    pyperclip.copy(password)
 
 
 # Window
@@ -70,7 +82,7 @@ window.geometry(f"{BACKGROUND_WIDTH}x{BACKGROUND_HEIGHT}")
 window.config(padx=BACKGROUND_PADDING, pady=BACKGROUND_PADDING)
 
 # Image
-logo_image = PhotoImage(file="logo.png")
+logo_image = PhotoImage(file="./logo.png")
 
 # Canvas
 canvas = Canvas(
@@ -111,7 +123,7 @@ username_input.insert(0, "oscar.cruz@mail.com")
 website_input.focus()
 
 # Button
-generate_password_button = Button(text="Generate Password", font=(FONT_NAME, 12), width=19)
+generate_password_button = Button(text="Generate Password", font=(FONT_NAME, 12), width=19, command=random_password)
 add_button = Button(text="Add", font=(FONT_NAME, 12), width=42, command=save)
 
 generate_password_button.grid(column=2, row=3, pady=(4, 8))
