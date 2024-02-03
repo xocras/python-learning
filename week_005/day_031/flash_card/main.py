@@ -1,6 +1,8 @@
+import random
 
+import pandas
 
-from tkinter import Tk, Canvas, PhotoImage, Label, Button, Entry, messagebox
+from tkinter import Tk, Canvas, PhotoImage, Label, Button
 
 BACKGROUND_WIDTH = 450
 BACKGROUND_HEIGHT = 371
@@ -10,6 +12,57 @@ ICON_SIZE = 55
 FONT_NAME = "Ariel"
 
 BACKGROUND_COLOR = "#B1DDC6"
+CARD_BACK_COLOR = "#91C2AF"
+
+
+# Functions
+def next_round():
+    global timer
+    window.after_cancel(timer)
+    timer = window.after(3000, flip_card)
+
+
+def flip_card():
+    canvas.itemconfig(card_image, image=card_back_source)
+
+    language_label.config(bg=CARD_BACK_COLOR, fg="white", text="English")
+    word_label.config(bg=CARD_BACK_COLOR, fg="white", text=word["English"])
+
+
+def next_card():
+    global word
+    word = random.choice(words)
+
+    canvas.itemconfig(card_image, image=card_front_source)
+
+    language_label.config(bg="white", fg="black", text="French")
+    word_label.config(bg="white", fg="black", text=word["French"])
+
+    next_round()
+
+
+def add_score():
+    global score
+    score += 1
+    update_words()
+    next_card()
+
+
+def update_words():
+    words.remove(word)
+    pandas.DataFrame(words).to_csv("./data/words_to_learn.csv", index=False)
+
+
+# Score
+score = 0
+
+# Load Words
+try:
+    words = pandas.read_csv("./data/words_to_learn.csv").to_dict(orient="records")
+except FileNotFoundError:
+    words = pandas.read_csv("./data/french_words.csv").to_dict(orient="records")
+print(len(words))
+word = random.choice(words)
 
 # Window
 window = Tk()
@@ -43,18 +96,21 @@ canvas.grid(column=0, row=0, columnspan=2)
 correct_button = Button(image=correct_source)
 incorrect_button = Button(image=incorrect_source)
 
-correct_button.config(highlightthickness=0, borderwidth=0)
-incorrect_button.config(highlightthickness=0, borderwidth=0)
+correct_button.config(highlightthickness=0, borderwidth=0, command=add_score)
+incorrect_button.config(highlightthickness=0, borderwidth=0, command=next_card)
 
 correct_button.grid(column=1, row=1)
 incorrect_button.grid(column=0, row=1)
 
 # Labels
 language_label = Label(text="French", font=(FONT_NAME, 20, "italic"), bg="white")
-word_label = Label(text="omelette", font=(FONT_NAME, 30, "bold"), bg="white")
+word_label = Label(text=f"{word["French"]}", font=(FONT_NAME, 30, "bold"), bg="white")
 
-language_label.grid(column=0, row=0, columnspan=2, pady=(0, 152))
-word_label.grid(column=0, row=0, columnspan=2)
+language_label.grid(column=0, row=0, columnspan=2, pady=(0, 128))
+word_label.grid(column=0, row=0, columnspan=2, pady=(8, 0))
+
+# Game
+timer = window.after(3000, flip_card)
 
 # Start
 window.mainloop()
