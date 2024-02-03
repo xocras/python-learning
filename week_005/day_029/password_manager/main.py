@@ -20,7 +20,7 @@ FONT_NAME = "Arial"
 def save():
     #  Read Data
     try:
-        passwords = (pandas.read_csv("./passwords.csv"))
+        passwords = (pandas.read_csv("passwords.csv"))
     except FileNotFoundError:
         passwords = []
 
@@ -60,7 +60,7 @@ def save():
         data = pandas.concat([passwords, data])
 
     # Save Password
-    data.to_csv('./passwords.csv', index=False)
+    data.to_csv('passwords.csv', index=False)
 
     # Clear Inputs
     website_input.delete(0, 'end')
@@ -82,7 +82,7 @@ window.geometry(f"{BACKGROUND_WIDTH}x{BACKGROUND_HEIGHT}")
 window.config(padx=BACKGROUND_PADDING, pady=BACKGROUND_PADDING)
 
 # Image
-logo_image = PhotoImage(file="./logo.png")
+logo_image = PhotoImage(file="logo.png")
 
 # Canvas
 canvas = Canvas(
