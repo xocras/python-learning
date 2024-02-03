@@ -27,6 +27,16 @@ def save():
         "password": [password_input.get()]
     }
 
+    # Check Inputs
+    for field in data.values():
+        if not field[0]:
+            messagebox.showinfo(
+                "Error",
+                "Missing information.\n\n" +
+                "Please review and fill all the fields."
+            )
+            return
+
     # User Confirmation
     confirmation = messagebox.askyesno(
         "Confirmation",
