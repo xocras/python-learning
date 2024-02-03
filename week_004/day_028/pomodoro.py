@@ -1,4 +1,5 @@
 from tkinter import Tk, Canvas, PhotoImage, Label, Button
+
 # ---------------------------- CONSTANTS ------------------------------- #
 PINK = "#e2979c"
 RED = "#e7305b"
@@ -16,9 +17,25 @@ MARGIN = 24
 
 # ---------------------------- TIMER RESET ------------------------------- # 
 
-# ---------------------------- TIMER MECHANISM ------------------------------- # 
+# ---------------------------- TIMER MECHANISM ------------------------------- #
 
-# ---------------------------- COUNTDOWN MECHANISM ------------------------------- # 
+
+def start_timer():
+    count_down(25*60)
+
+# ---------------------------- COUNTDOWN MECHANISM ------------------------------- #
+
+
+def count_down(count):
+    if count < 0:
+        return
+
+    minutes, seconds = divmod(count, 60)
+
+    canvas.itemconfig(timer, text=f"{minutes:02d}:{seconds:02d}")
+
+    window.after(1000, count_down, count - 1)
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -27,6 +44,7 @@ window = Tk()
 window.title("Pomodoro")
 window.minsize(BACKGROUND_WIDTH, BACKGROUND_HEIGHT)
 window.config(padx=80, pady=8, bg=YELLOW)
+
 
 # Image
 background_image = PhotoImage(file="tomato.png")
@@ -41,7 +59,7 @@ canvas.create_image(
     image=background_image
 )
 
-canvas.create_text(
+timer = canvas.create_text(
     BACKGROUND_WIDTH/2,
     BACKGROUND_HEIGHT/2 + MARGIN,
     text="00:00",
@@ -54,7 +72,7 @@ canvas.grid(column=2, row=2, pady=8)
 # Title
 
 title = Label(
-    text="Title",
+    text="Pomodoro!",
     fg=GREEN,
     bg=YELLOW,
     font=(FONT_NAME, 32, "bold")
@@ -66,7 +84,8 @@ title.grid(column=2, row=0, pady=(32, 16))
 
 start_button = Button(
     text="Start",
-    font=(FONT_NAME, 16, "bold")
+    font=(FONT_NAME, 16, "bold"),
+    command=start_timer
 )
 
 start_button.grid(column=1, row=3, pady=(32, 64))
@@ -92,4 +111,5 @@ checkmarks = Label(
 checkmarks.grid(column=2, row=3, pady=(32, 64))
 
 # Start
+
 window.mainloop()
