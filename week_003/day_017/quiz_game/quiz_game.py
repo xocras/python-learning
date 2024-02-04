@@ -2,7 +2,7 @@ from question_model import Question
 from quiz_brain import QuizBrain
 from data import question_data
 
-question_list = list(map(lambda q: Question(q), question_data["results"]))
+question_list = [Question(question) for question in question_data["results"]]
 
 quiz_brain = QuizBrain(question_list)
 
