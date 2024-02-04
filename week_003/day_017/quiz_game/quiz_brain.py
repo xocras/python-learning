@@ -13,7 +13,7 @@ class QuizBrain:
     def check_answer(self, answer):
         result = self.question_list[self.question_index].answer[0].lower() == answer[0]
 
-        print("Correct!" if result else "Wrong!")
+        print("\nCorrect!" if result else "\nWrong!")
 
         self.score += 1 if result else 0
 
@@ -32,7 +32,7 @@ class QuizBrain:
 
         answer = input(f"\nQ.{self.question_index + 1}:"
                        f" {self.question_list[self.question_index].text}"
-                       f" (True/False):\n\n").lower()
+                       f" (True/False): ").lower()
 
         if answer == "end":
             return self.end_game()
