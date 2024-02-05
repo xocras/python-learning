@@ -22,8 +22,7 @@ PHONE_TO = '-'
 CLIENT = Client(TWILIO_SID, TWILIO_TOKEN)
 
 
-def send_request(endpoint: str, **kwargs) -> dict:
-    parameters = kwargs
+def send_request(endpoint: str, **parameters) -> dict:
 
     response = requests.get(endpoint, parameters)
 
