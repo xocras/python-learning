@@ -45,8 +45,3 @@ handler.setFormatter(formatter)
 getLogger().handlers.clear()
 getLogger().addHandler(handler)
 
-
-
-
-
-
