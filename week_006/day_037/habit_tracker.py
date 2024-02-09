@@ -76,11 +76,3 @@ def delete_pixel(graph_id, date):
     requests.delete(f"{GRAPH_ENDPOINT}/{graph_id}/{date}", headers)
 
     logging.info(f"https://pixe.la/v1/users/{PIXELA_USER}/graphs/{graph_id}.html")
-
-
-def main():
-    pass
-
-
-if __name__ == '__main__':
-    main()
