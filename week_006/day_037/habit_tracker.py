@@ -1,19 +1,12 @@
-import requests
+import custom_logging as logging
+
+import custom_requests as requests
 
 PIXELA_USER = "-"
 PIXELA_TOKEN = "-"
 PIXELA_ENDPOINT = "https://pixe.la/v1/users"
 
 GRAPH_ENDPOINT = f"{PIXELA_ENDPOINT}/{PIXELA_USER}/graphs"
-
-
-def post_request(endpoint: str, parameters: dict, headers: dict = None):
-
-    response = requests.post(endpoint, json=parameters, headers=headers)
-
-    print(response.text)
-
-    response.raise_for_status()
 
 
 def create_user():
@@ -24,7 +17,7 @@ def create_user():
         'notMinor': 'yes'
     }
 
-    post_request(PIXELA_ENDPOINT, parameters)
+    requests.post(PIXELA_ENDPOINT, parameters)
 
 
 def create_graph(parameters):
@@ -41,12 +34,12 @@ def create_graph(parameters):
     #     'timezone': 'timezone'
     # }
 
-    post_request(GRAPH_ENDPOINT, parameters, headers)
+    requests.post(GRAPH_ENDPOINT, parameters, headers)
 
-    print(f"https://pixe.la/v1/users/{PIXELA_USER}/graphs/{parameters['id']}.html")
+    logging.info(f"https://pixe.la/v1/users/{PIXELA_USER}/graphs/{parameters['id']}.html")
 
 
-def add_pixel(parameters, graph_id):
+def add_pixel(parameters: dict, graph_id: str):
     headers = {
         'X-USER-TOKEN': PIXELA_TOKEN
     }
@@ -56,6 +49,38 @@ def add_pixel(parameters, graph_id):
     #     'quantity': 'quantity',
     # }
 
-    post_request(f"{GRAPH_ENDPOINT}/{graph_id}", parameters, headers)
+    requests.post(f"{GRAPH_ENDPOINT}/{graph_id}", parameters, headers)
 
-    print(f"https://pixe.la/v1/users/{PIXELA_USER}/graphs/{graph_id}.html")
+    logging.info(f"https://pixe.la/v1/users/{PIXELA_USER}/graphs/{graph_id}.html")
+
+
+def update_pixel(parameters, graph_id, date):
+    headers = {
+        'X-USER-TOKEN': PIXELA_TOKEN
+    }
+
+    # parameters = {
+    #     'quantity': 'quantity',
+    # }
+
+    requests.put(f"{GRAPH_ENDPOINT}/{graph_id}/{date}", parameters, headers)
+
+    logging.info(f"https://pixe.la/v1/users/{PIXELA_USER}/graphs/{graph_id}.html")
+
+
+def delete_pixel(graph_id, date):
+    headers = {
+        'X-USER-TOKEN': PIXELA_TOKEN
+    }
+
+    requests.delete(f"{GRAPH_ENDPOINT}/{graph_id}/{date}", headers)
+
+    logging.info(f"https://pixe.la/v1/users/{PIXELA_USER}/graphs/{graph_id}.html")
+
+
+def main():
+    pass
+
+
+if __name__ == '__main__':
+    main()
