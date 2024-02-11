@@ -1,6 +1,5 @@
 # Workout App
 # https://developer.nutritionix.com/admin/access_details
-import logging
 
 import custom_requests as requests
 
