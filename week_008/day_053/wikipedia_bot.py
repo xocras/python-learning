@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 
 from selenium.webdriver.support.ui import WebDriverWait
 
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 
 
 def main():
@@ -32,7 +32,7 @@ def main():
 
     logo = 'img[alt="Wikipedia"]'
 
-    wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, logo)))
+    wait.until(ec.presence_of_element_located((By.CSS_SELECTOR, logo)))
 
     with open('./random_article.js') as script:
         browser.execute_script(script.read())

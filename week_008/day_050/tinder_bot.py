@@ -6,7 +6,7 @@ from selenium.webdriver.common.by import By
 
 from selenium.webdriver.support.ui import WebDriverWait
 
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 
 
 def main():
@@ -39,7 +39,7 @@ def main():
     try:
         while True:
 
-            wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, like)))
+            wait.until(ec.presence_of_element_located((By.CSS_SELECTOR, like)))
 
             browser.find_element(By.CSS_SELECTOR, dislike).click()
 

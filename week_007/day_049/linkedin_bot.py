@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 
 from selenium.webdriver.support.ui import WebDriverWait
 
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 
 
 def main():
@@ -40,7 +40,7 @@ def main():
 
     signin_button = 'button[data-id="sign-in-form__submit-btn"]'
 
-    wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, user_input)))
+    wait.until(ec.presence_of_element_located((By.CSS_SELECTOR, user_input)))
 
     browser.find_element(By.CSS_SELECTOR, user_input).send_keys(user)
 
