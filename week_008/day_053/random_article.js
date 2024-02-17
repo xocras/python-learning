@@ -1,0 +1,1 @@
+document.querySelector('[title="Visit a randomly selected article [alt-shift-x]"]').click();
