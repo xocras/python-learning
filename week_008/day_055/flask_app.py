@@ -7,13 +7,20 @@ app = Flask(__name__)
 answer = randint(1, 10)
 
 
-def make_heading(text):
+def make_heading(f):
     def return_heading():
-        return f'<h1>{text()}</h1>'
+        return f'<h1>{f()}</h1>'
     return return_heading
 
 
+def add_image(f):
+    def add_image_tag():
+        return f'{f()}<img src="https://media.giphy.com/media/3o7aCSPqXE5C6T8tBC/giphy.gif">'
+    return add_image_tag
+
+
 @app.route('/')
+@add_image
 @make_heading
 def home():
     return 'Choose a number!'
