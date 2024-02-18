@@ -4,9 +4,14 @@ app = Flask(__name__)
 
 
 @app.route("/")
-def hello_world():
+def home():
     with open('./motivational_poster.html') as html:
         return html.read()
+
+
+@app.route("/secret")
+def secret():
+    return 'Oh, no! You found me.'
 
 
 def main():
