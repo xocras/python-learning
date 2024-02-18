@@ -7,19 +7,28 @@ app = Flask(__name__)
 answer = randint(1, 10)
 
 
+def make_heading(text):
+    def return_heading():
+        return f'<h1>{text()}</h1>'
+    return return_heading
+
+
 @app.route('/')
+@make_heading
 def home():
     return 'Choose a number!'
 
 
 @app.route(f'/{answer}')
 def correct():
-    return f'You found me!'
+    with open('./correct.html') as file:
+        return file.read()
 
 
 @app.route('/<int:number>')
 def choice(number):
-    return 'Too high!' if number > answer else 'Too low!'
+    with open(f'./{'too_high' if number > answer else 'too_low'}.html') as file:
+        return file.read()
 
 
 @app.route('/user/<name>/<int:age>')
