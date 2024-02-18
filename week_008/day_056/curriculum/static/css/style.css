@@ -1,0 +1,107 @@
+* {
+  box-sizing: border-box;
+  color: #212121;
+}
+
+h1,
+h2 {
+  font-size: 1.25em;
+  margin: 8px;
+  padding: 0;
+}
+
+p {
+  text-align: center;
+  margin: 16px 24px;
+  padding: 0 16px;
+}
+
+h1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-top: 24px;
+}
+
+h2 {
+  margin-top: 0;
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100vh;
+  padding: 32px 0;
+  margin: 0;
+  overflow-y: hidden;
+
+  background-image: url("../rsc/background.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  flex-direction: column;
+  padding: 32px 16px 40px;
+  margin: 0 16px;
+  max-width: 420px;
+  background-color: #ffffff;
+  border-radius: 16px;
+
+  background-color: rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(20px);
+
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.profile-picture {
+  height: 150px;
+
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 50%;
+  opacity: 90%;
+
+  margin-top: 8px;
+}
+
+input {
+  display: inline-block;
+  margin: 16px 0;
+  padding: 4px 0;
+
+  width: 80%;
+  height: 30px;
+  background: transparent;
+  border: 2px solid rgba(255, 255, 255, 0.8);
+  border-radius: 10px;
+  color: #ffffff;
+
+  font-weight: bold;
+  font-size: 16px;
+
+  transition: color 0.25s ease;
+
+  cursor: pointer;
+}
+
+input:hover {
+  opacity: 0.8;
+  color: black;
+  background: #ffffff;
+}
