@@ -7,10 +7,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template(
-        'index.html',
-        year=datetime.now().year
-    )
+    return render_template('index.html')
 
 
 def main():
