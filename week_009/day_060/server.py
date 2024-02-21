@@ -39,11 +39,6 @@ def blog_post(post_id):
     )
 
 
-@app.route('/form')
-def form():
-    return render_template('form.html')
-
-
 def main():
     app.run(debug=True)
 
