@@ -28,8 +28,19 @@ def contact():
 
 
 @app.route('/contact', methods=['POST'])
-def contact():
-    return '<h1>Success!</h1>'
+def contact_post():
+    name = request.form['name']
+    email = request.form['email']
+    phone = request.form['phone']
+    message = request.form['message']
+
+    return (
+        f'<h1>Success!</h1>'
+        f'<p>Name: {name}</p>'
+        f'<p>Email: {email}</p>'
+        f'<p>Phone: {phone}</p>'
+        f'<p>Message: {message}</p>'
+    )
 
 
 @app.route('/post/<int:post_id>')
