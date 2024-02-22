@@ -1,6 +1,6 @@
 import requests
 
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 RESPONSE = requests.get('https://api.npoint.io/8bd72c17fef7761df73b').json()
 AUTHOR = 'Oscar Cruz'
@@ -27,6 +27,11 @@ def contact():
     return render_template('contact.html')
 
 
+@app.route('/contact', methods=['POST'])
+def contact():
+    return '<h1>Success!</h1>'
+
+
 @app.route('/post/<int:post_id>')
 def blog_post(post_id):
 
@@ -37,6 +42,18 @@ def blog_post(post_id):
         author=AUTHOR,
         post=post
     )
+
+
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+
+@app.route('/login', methods=['POST'])
+def login_post():
+    username = request.form['username']
+    password = request.form['password']
+    return f'<h1>Logged In</h1><p>User: {username}</p><p>Password: {password}</p>'
 
 
 def main():
