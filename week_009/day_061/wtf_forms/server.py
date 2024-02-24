@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField
-from wtforms.validators import DataRequired
+from wtforms import EmailField, PasswordField, SubmitField
+from wtforms.validators import DataRequired, Email, Length
 from flask import Flask, render_template
 
 app = Flask(__name__)
@@ -9,8 +9,9 @@ app.secret_key = "SECRET_KEY"
 
 
 class LoginForm(FlaskForm):
-    email = StringField('Email: ', validators=[DataRequired()])
-    password = PasswordField('Password: ', validators=[DataRequired()])
+    email = EmailField('Email: ', validators=[DataRequired(), Email()])
+    password = PasswordField('Password: ', validators=[DataRequired(), Length(8)])
+    submit = SubmitField('Log In')
 
 
 @app.route('/')
@@ -25,10 +26,10 @@ def login():
 
 @app.route('/login', methods=['POST'])
 def submit():
-    form = LoginForm()
-    if form.validate_on_submit():
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
         return '<h1>It works!</h1>'
-    return render_template('login.html', form=form)
+    return render_template('login.html', login_form=login_form)
 
 
 def main():
