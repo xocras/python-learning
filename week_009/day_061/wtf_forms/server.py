@@ -7,6 +7,9 @@ app = Flask(__name__)
 
 app.secret_key = "SECRET_KEY"
 
+EMAIL = 'admin@email.com'
+PASSWORD = '12345678'
+
 
 class LoginForm(FlaskForm):
     email = EmailField('Email: ', validators=[DataRequired(), Email()])
@@ -28,7 +31,10 @@ def login():
 def submit():
     login_form = LoginForm()
     if login_form.validate_on_submit():
-        return '<h1>It works!</h1>'
+        if login_form.email.data == EMAIL and login_form.password.data == PASSWORD:
+            return render_template('success.html')
+        else:
+            return render_template('denied.html')
     return render_template('login.html', login_form=login_form)
 
 
