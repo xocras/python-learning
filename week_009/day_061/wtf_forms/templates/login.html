@@ -1,11 +1,17 @@
-<!DOCTYPE HTML>
+{% extends "base.html" %}
 
-<html>
-	<head>
-		<title>Login</title>
-	</head>
-	<body>
-        <div class="container">
+{% block title %}Login{% endblock %}
+
+
+{% block styling %}
+   {{ super() }}
+   ul > li {
+      color:red;
+   }
+{% endblock %}
+
+{% block content %}
+   <div class="container-fluid py-5">
 		<h1>Login</h1>
         <form method="POST" action="{{url_for('login')}}" novalidate>
 			{{ login_form.csrf_token }}
@@ -27,7 +33,5 @@
 			{% endif %}
 			{{ login_form.submit}}
 		</form>
-
-        </div>
-	</body>
-</html>
+   </div>
+{% endblock %}
