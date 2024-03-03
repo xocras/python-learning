@@ -1,5 +1,4 @@
 import requests
-import json
 from os import environ
 from flask import Flask, render_template, url_for, redirect
 from flask_bootstrap import Bootstrap5
@@ -186,5 +185,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
