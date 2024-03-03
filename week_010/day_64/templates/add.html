@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% from 'bootstrap5/form.html' import render_form %}
+
+{% block title %}Add Movie{% endblock %}
+
+{% block content %}
+<div class="content p-5 justify-content-start">
+    <h1 class="heading">Add a Movie</h1>
+    <div class="d-flex flex-column justify-content-between">
+    {{  render_form(form) }}
+    <br>
+    <a href="{{url_for('index')}}">Go Back</a>
+  </div>
+</div>
+{% endblock %}
