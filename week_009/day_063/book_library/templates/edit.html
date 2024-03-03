@@ -2,9 +2,13 @@
 
 {% from 'bootstrap5/form.html' import render_form %}
 
-{% block title %}Add Book{% endblock %}
+{% block title %}Edit Book{% endblock %}
 
 {% block content %}
+
+    <h1>{{ book.name }}</h1>
+
+    <p>Rating: {{ (book.rating|int) if not (book.rating % 1) else (book.rating) }}/10</p>
 
     {{  render_form(form) }}
 
@@ -13,4 +17,3 @@
     <a href="{{url_for('index')}}">See All Books</a>
 
 {% endblock %}
-
