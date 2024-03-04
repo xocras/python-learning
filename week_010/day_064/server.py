@@ -130,8 +130,6 @@ def new(movie_id):
 
         db.session.add(movie)
 
-        db.session.commit()
-
         movie.rating = form.rating.data
         movie.review = form.review.data
 
