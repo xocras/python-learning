@@ -1,13 +1,13 @@
-from flask import Flask, render_template, redirect, url_for, request
+from flask import Flask, render_template, request
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 from sqlalchemy import Integer, String, Text
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired, URL
+from wtforms import StringField, URLField, SubmitField
+from wtforms.validators import DataRequired, Length, URL
 from flask_ckeditor import CKEditor, CKEditorField
-from datetime import date
+from datetime import datetime
 from os import getenv
 
 
@@ -22,6 +22,8 @@ app.config['SECRET_KEY'] = getenv('SECRET_KEY')
 
 Bootstrap5(app)
 
+ckeditor = CKEditor(app)
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
 
 db = SQLAlchemy(model_class=Base)
@@ -29,7 +31,19 @@ db = SQLAlchemy(model_class=Base)
 db.init_app(app)
 
 
+# CONFIGURE FORM
+
+class PostAddForm(FlaskForm):
+    title = StringField('Title:', validators=[DataRequired(), Length(0, 250)])
+    subtitle = StringField('Subtitle:', validators=[DataRequired(), Length(0, 250)])
+    author = StringField('Author:', validators=[DataRequired(), Length(0, 100)])
+    img_url = URLField('Background Image:', validators=[DataRequired(), URL()])
+    body = CKEditorField('Body:', validators=[DataRequired()])
+    submit = SubmitField('Add Post')
+
+
 # CONFIGURE TABLE
+
 class BlogPost(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     title: Mapped[str] = mapped_column(String(250), unique=True, nullable=False)
@@ -58,24 +72,26 @@ def show_post(post_id):
 
 @app.route('/add', methods=['GET', 'POST'])
 def add_post():
+    form = PostAddForm()
 
-    if request.method == 'GET':
-        return render_template("make-post.html")
+    if form.validate_on_submit():
 
-    post = BlogPost(
-        title='',
-        subtitle='',
-        date='',
-        body='',
-        author='',
-        img_url='',
-    )
+        post = BlogPost(
+            title=form.title.data,
+            subtitle=form.subtitle.data,
+            date=datetime.today().date().strftime('%B %d, %Y'),
+            body=form.body.data,
+            author=form.author.data,
+            img_url=form.img_url.data,
+        )
 
-    db.session.add(post)
+        db.session.add(post)
 
-    db.session.commit()
+        db.session.commit()
 
-    return show_post(post.id)
+        return show_post(post.id)
+
+    return render_template("make-post.html", form=form)
 
 
 @app.route('/<int:post_id>', methods=['PATCH'])
