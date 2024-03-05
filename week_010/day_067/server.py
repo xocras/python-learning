@@ -37,9 +37,9 @@ class PostAddForm(FlaskForm):
     title = StringField('Title:', validators=[DataRequired(), Length(0, 250)])
     subtitle = StringField('Subtitle:', validators=[DataRequired(), Length(0, 250)])
     author = StringField('Author:', validators=[DataRequired(), Length(0, 100)])
-    img_url = URLField('Background Image:', validators=[DataRequired(), URL()])
-    body = CKEditorField('Body:', validators=[DataRequired()])
-    submit = SubmitField('Add Post')
+    img_url = URLField('Blog Image URL:', validators=[DataRequired(), URL()])
+    body = CKEditorField('Blog Content:', validators=[DataRequired()])
+    submit = SubmitField('Submit Post')
 
 
 # CONFIGURE TABLE
