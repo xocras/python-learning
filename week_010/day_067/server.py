@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, url_for, redirect
 from flask_bootstrap import Bootstrap5
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
@@ -33,7 +33,7 @@ db.init_app(app)
 
 # CONFIGURE FORM
 
-class PostAddForm(FlaskForm):
+class PostForm(FlaskForm):
     title = StringField('Title:', validators=[DataRequired(), Length(0, 250)])
     subtitle = StringField('Subtitle:', validators=[DataRequired(), Length(0, 250)])
     author = StringField('Author:', validators=[DataRequired(), Length(0, 100)])
@@ -58,7 +58,7 @@ with app.app_context():
     db.create_all()
 
 
-@app.route('/', methods=['GET'])
+@app.route('/')
 def get_all_posts():
     posts = BlogPost.query.all()
     return render_template("index.html", all_posts=posts)
@@ -72,7 +72,7 @@ def show_post(post_id):
 
 @app.route('/add', methods=['GET', 'POST'])
 def add_post():
-    form = PostAddForm()
+    form = PostForm()
 
     if form.validate_on_submit():
 
@@ -89,21 +89,42 @@ def add_post():
 
         db.session.commit()
 
-        return show_post(post.id)
+        return redirect(url_for('show_post', post_id=post.id))
 
     return render_template("make-post.html", form=form)
 
 
-@app.route('/<int:post_id>', methods=['PATCH'])
+@app.route('/edit-post/<int:post_id>', methods=['GET', 'POST'])
 def edit_post(post_id):
+
     post = db.session.get(BlogPost, post_id)
 
-    post.title = ''
+    form = PostForm(
+        title=post.title,
+        subtitle=post.subtitle,
+        img_url=post.img_url,
+        author=post.author,
+        body=post.body
+    )
 
-    return render_template("post.html", post=post)
+    if form.validate_on_submit():
+
+        post.title = form.title.data
+        post.subtitle = form.subtitle.data
+        post.body = form.body.data
+        post.author = form.author.data
+        post.img_url = form.img_url.data
+
+        db.session.add(post)
+
+        db.session.commit()
+
+        return redirect(url_for('show_post', post_id=post.id))
+
+    return render_template("make-post.html", form=form, post=post, title="Edit Post")
 
 
-@app.route('/<int:post_id>', methods=['DELETE'])
+@app.route('/delete/<int:post_id>')
 def delete_post(post_id):
     post = db.session.get(BlogPost, post_id)
 
@@ -111,7 +132,7 @@ def delete_post(post_id):
 
     db.session.commit()
 
-    return get_all_posts()
+    return redirect(url_for('get_all_posts'))
 
 
 # Below is the code from previous lessons. No changes needed.
