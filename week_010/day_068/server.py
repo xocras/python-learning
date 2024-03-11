@@ -16,6 +16,8 @@ app = Flask(__name__)
 
 app.config['SECRET_KEY'] = getenv('SECRET_KEY')
 
+app.config['UPLOAD_FOLDER'] = './static/files'
+
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
 
 db = SQLAlchemy(model_class=Base)
@@ -83,7 +85,9 @@ def logout():
 
 @app.route('/download')
 def download():
-    pass
+    return send_from_directory(
+        app.config['UPLOAD_FOLDER'], 'cheat_sheet.pdf', as_attachment=True
+    )
 
 
 if __name__ == "__main__":
