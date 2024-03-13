@@ -3,8 +3,8 @@ from flask import Flask, render_template, request, url_for, redirect, flash, sen
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-from sqlalchemy import Integer, String
-from flask_login import UserMixin, login_user, LoginManager, login_required, current_user, logout_user
+from sqlalchemy import Integer, String, Boolean
+from flask_login import login_user, LoginManager, login_required, current_user, logout_user
 
 
 # CREATE DATABASE
@@ -29,13 +29,31 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-# CONFIGURE TABLE
+# CONFIGURE USER
 
 class User(db.Model):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     email: Mapped[str] = mapped_column(String(100), unique=True)
     password: Mapped[str] = mapped_column(String(100))
     name: Mapped[str] = mapped_column(String(1000))
+    authenticated: Mapped[bool] = mapped_column(Boolean)
+    active: Mapped[bool] = mapped_column(Boolean)
+    anonymous: Mapped[bool] = mapped_column(Boolean)
+
+    @property
+    def is_authenticated(self):
+        return self.authenticated
+
+    @property
+    def is_active(self):
+        return self.active
+
+    @property
+    def is_anonymous(self):
+        return self.anonymous
+
+    def get_id(self):
+        return str(self.id)
 
 
 with app.app_context():
@@ -44,7 +62,7 @@ with app.app_context():
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)
+    return User.query.get(user_id)
 
 
 @app.route('/')
@@ -69,32 +87,55 @@ def register():
         user = User(
             name=request.form.get('name'),
             password=password,
-            email=email
+            email=email,
+            authenticated=True,
+            active=True,
+            anonymous=False,
         )
 
         db.session.add(user)
 
         db.session.commit()
 
+        login_user(user)
+
         return render_template("secrets.html", user=user)
 
     return render_template("register.html")
 
 
-@app.route('/login')
+@app.route('/login', methods=['GET', 'POST'])
 def login():
+    if request.method == 'POST':
+
+        email = request.form.get('email')
+
+        user = User.query.filter_by(email=email).first()
+        if not user:
+            return render_template("login.html", message="This account doesn't exist.")
+
+        password = request.form.get('password')
+
+        if not check_password_hash(user.password, password):
+            return render_template("login.html", message="Invalid password.")
+
+        login_user(user)
+
+        return render_template("secrets.html", user=user)
+
     return render_template("login.html")
 
 
 @app.route('/secrets')
 @login_required
 def secrets():
-    return render_template("secrets.html")
+    return render_template("secrets.html", user=current_user)
 
 
 @app.route('/logout')
 @login_required
 def logout():
+    logout_user()
     return redirect(url_for('home'))
 
 
