@@ -24,6 +24,10 @@ db = SQLAlchemy(model_class=Base)
 
 db.init_app(app)
 
+login_manager = LoginManager()
+
+login_manager.init_app(app)
+
 
 # CONFIGURE TABLE
 
@@ -36,6 +40,11 @@ class User(db.Model):
 
 with app.app_context():
     db.create_all()
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.get(user_id)
 
 
 @app.route('/')
@@ -53,9 +62,13 @@ def register():
         if user:
             return render_template("register.html", message="This e-mail is already in use.")
 
+        password = request.form.get('password')
+
+        password = generate_password_hash(password, salt_length=8)
+
         user = User(
             name=request.form.get('name'),
-            password=request.form.get('password'),
+            password=password,
             email=email
         )
 
@@ -74,16 +87,19 @@ def login():
 
 
 @app.route('/secrets')
+@login_required
 def secrets():
     return render_template("secrets.html")
 
 
 @app.route('/logout')
+@login_required
 def logout():
     return redirect(url_for('home'))
 
 
 @app.route('/download')
+@login_required
 def download():
     return send_from_directory(
         app.config['UPLOAD_FOLDER'], 'cheat_sheet.pdf', as_attachment=True
