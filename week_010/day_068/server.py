@@ -79,7 +79,8 @@ def register():
 
         user = User.query.filter_by(email=email).first()
         if user:
-            return render_template("register.html", message="This e-mail is already in use.")
+            flash("This e-mail is already in use. Try to log in instead.")
+            return render_template('login.html', email=email)
 
         password = request.form.get('password')
 
@@ -100,7 +101,7 @@ def register():
 
         login_user(user)
 
-        return render_template("secrets.html", user=user)
+        return render_template("secrets.html", user=current_user)
 
     return render_template("register.html")
 
@@ -113,16 +114,18 @@ def login():
 
         user = User.query.filter_by(email=email).first()
         if not user:
-            return render_template("login.html", message="This account doesn't exist.")
+            flash("This account doesn't exist. Try to register instead.")
+            return render_template('register.html', email=email)
 
         password = request.form.get('password')
 
         if not check_password_hash(user.password, password):
-            return render_template("login.html", message="Invalid password.")
+            flash("Invalid password. Try again.")
+            return render_template('login.html', email=email)
 
         login_user(user)
 
-        return render_template("secrets.html", user=user)
+        return render_template("secrets.html", user=current_user)
 
     return render_template("login.html")
 
