@@ -12,8 +12,7 @@
     class="btn btn-secondary btn-block btn-large"
     >Register</a
   >
-  {% endif %}
-  {% if current_user.is_authenticated: %}
+  {% else %}
       <a
       href="{{ url_for('secrets') }}"
       class="btn btn-primary btn-block btn-large"
