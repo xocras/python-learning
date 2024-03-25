@@ -1,3 +1,4 @@
+from os import environ
 from datetime import date
 from hashlib import md5
 from typing import List
@@ -20,9 +21,9 @@ class Base(DeclarativeBase):
 
 app = Flask(__name__)
 
-app.config['SECRET_KEY'] = '8BYkEfBA6O6donzWlSihBXox7C0sKR6b'
+app.config['SECRET_KEY'] = environ.get('FLASK_KEY')
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///posts.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get("DB_URI", "sqlite:///posts.db")
 
 db = SQLAlchemy(model_class=Base)
 
@@ -298,4 +299,4 @@ def contact():
 
 
 if __name__ == "__main__":
-    app.run(debug=True, port=5002)
+    app.run()
