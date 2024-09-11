@@ -1,7 +1,6 @@
 import pywhatkit as whatsapp
 
 phone_numbers = ["+123456789"]
-image_path = "image.png"
 message = "Hello from Python! This is an instant WhatsApp message."
 
 for phone_number in phone_numbers:
